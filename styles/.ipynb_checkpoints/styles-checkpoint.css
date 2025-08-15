@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 2rem;
+    background-color: #1e1e1e; /* dark background */
+    color: #cfcfcf;            /* light text */
+    line-height: 1.6;
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff;
+}
+
+ul, li {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.folder {
+    cursor: pointer;
+    font-weight: bold;
+    color: #8ab4f8; /* blue-ish for folders */
+}
+
+li a {
+    text-decoration: none;
+    color: #a5d6ff; /* lighter blue for files */
+}
+
+li a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+}
+
+mark {
+    background-color: #ffd54f; /* highlighted search */
+    color: #000000;
+}
