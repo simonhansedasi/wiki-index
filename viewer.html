@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>File Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div id="content" style="max-width:800px; margin:auto; padding:20px;"></div>
+
+<script>
+function getFileType(file) {
+    const ext = file.split('.').pop().toLowerCase();
+    if (['md', 'markdown'].includes(ext)) return 'markdown';
+    if (['txt'].includes(ext)) return 'text';
+    if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(ext)) return 'image';
+    if (['pdf'].includes(ext)) return 'pdf';
+    if (['doc', 'docx'].includes(ext)) return 'doc';
+    return 'unknown';
+}
+
+async function loadFile(file) {
+    const type = getFileType(file);
+    const contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = ''; // clear previous content
+
+    if (type === 'markdown' || type === 'text') {
+        try {
+            const response = await fetch(file);
+            const text = await response.text();
+            if (type === 'markdown') {
+                contentDiv.innerHTML = marked.parse(text);
+            } else {
+                contentDiv.innerHTML = `<pre>${text}</pre>`;
+            }
+        } catch (err) {
+            contentDiv.innerHTML = `<p style="color:red;">${err}</p>`;
+        }
+    } else if (type === 'image') {
+        const img = document.createElement('img');
+        img.src = file;
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+        contentDiv.appendChild(img);
+    } else if (type === 'pdf') {
+        const iframe = document.createElement('iframe');
+        iframe.src = file;
+        iframe.style.width = '100%';
+        iframe.style.height = '80vh';
+        contentDiv.appendChild(iframe);
+    } else if (type === 'doc' || type === 'docx') {
+        contentDiv.innerHTML = `<p>Cannot render Word documents directly. <a href="${file}" target="_blank">Download</a></p>`;
+    } else {
+        contentDiv.innerHTML = `<p>Unsupported file type. <a href="${file}" target="_blank">Download</a></p>`;
+    }
+}
+
+// Read file path from URL parameter
+const params = new URLSearchParams(window.location.search);
+const filePath = params.get('file');
+
+if (filePath) {
+    loadFile(filePath);
+} else {
+    document.getElementById('content').innerHTML = "<p>No file specified.</p>";
+}
+</script>
+</body>
+</html>

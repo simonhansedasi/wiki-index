@@ -36,3 +36,40 @@ mark {
     background-color: #ffd54f; /* highlighted search */
     color: #000000;
 }
+
+
+/* Tree container */
+#fileTree ul {
+    list-style: none;
+    padding-left: 20px; /* indentation */
+    margin: 0;
+    position: relative;
+}
+
+/* Vertical guide line for nested folders/files */
+#fileTree ul::before {
+    content: '';
+    border-left: 1px solid #ccc;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px; /* aligns with padding-left */
+}
+
+/* Remove the line for the top-level root */
+#fileTree > ul::before {
+    border-left: none;
+}
+
+/* Folder labels */
+#fileTree .folder {
+    cursor: pointer;
+    position: relative;
+    padding-left: 5px;
+}
+
+/* Optional spacing for file items */
+#fileTree li {
+    position: relative;
+    padding-left: 15px;
+}
